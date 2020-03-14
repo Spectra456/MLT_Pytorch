@@ -2,7 +2,7 @@
 # Multi-task learning Pytorch
 Simple multi-task learning example on 2 different datasets.
 For all our test we using EfficentNetB0 with input size 3x32x32
-
+P.S. Sorry for my code-style, i don't have enough time(((
 # Cifar-10 (Single model)
 *Best Accuracy(top-1):* 88.7%
 
