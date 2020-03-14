@@ -76,7 +76,7 @@ Cifar-10
 
 2. Unzip archive into ***dataset*** folder of this project.
 3. `python train_simple.py --dataset FashionRGB`
- 4. `python train_simple.py --dataset FashionRGB`
+ 4. `python train_simple.py --dataset Cifar10`
  5. `python train_multi.py`
 You can check all arguments inside this two python scripts.
 5. Launch tensorboard (optional)
