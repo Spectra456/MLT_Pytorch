@@ -7,6 +7,7 @@ import torch.nn.functional as F
 import torch.backends.cudnn as cudnn
 import torchvision.transforms as transforms
 from torch.utils.tensorboard import SummaryWriter
+from sklearn.metrics import confusion_matrix
 
 import random
 from tqdm import tqdm
@@ -14,6 +15,10 @@ from itertools import cycle
 
 import os
 import argparse
+import seaborn as sn
+import pandas as pd
+import matplotlib.pyplot as plt
+
 
 from dataset import *
 from model import *
@@ -60,6 +65,7 @@ def train(epoch, iterator_fashion):
     test_progress_bar = tqdm(range(len(iterator_cifar)))
     test_progress_bar.set_description('Train')
 
+
     for batch_idx in test_progress_bar:
         if (bool(random.getrandbits(1)) == True):
             # training of Fashion RGB
@@ -98,6 +104,9 @@ def test(epoch, index):
     test_loss = 0
     total_acc = 0
 
+    conf_matrix_outputs = []
+    conf_matrix_targets = []
+
     if index == 0:
         test_progress_bar = tqdm(test_loader_fashion)
     else:
@@ -119,6 +128,27 @@ def test(epoch, index):
     writer.add_scalar('Loss/{} test'.format(datasets[index]), (test_loss)/(batch_idx+1), epoch)
 
     print('{} dataset, Top-1: {} %, Loss: {}'.format(datasets[index], round((total_acc)/(batch_idx+1),2), (test_loss)/(batch_idx+1)))
+
+    if epoch % 5 == 0:
+        if index == 0:
+            n_classes = 5
+            dataset_labels = ['Blouse','Dress','Jeans','Skirt','Tank']
+        else:
+            n_classes = 10
+            dataset_labels = ['plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
+        with torch.no_grad():
+            for batch_idx, (inputs, targets) in enumerate(test_progress_bar):
+                inputs, targets = inputs.to(device), targets.to(device)
+                outputs = model(inputs)
+                targets = targets.to('cpu')
+                conf_matrix_outputs.append(outputs[index].argmax(dim=1).to('cpu').numpy())
+                conf_matrix_targets.append(targets.numpy())
+
+            conf_matrix = confusion_matrix(np.concatenate(conf_matrix_outputs), np.concatenate(conf_matrix_targets))
+            df_cm = pd.DataFrame(conf_matrix, index = dataset_labels, columns = dataset_labels)
+            plt.figure(figsize = (n_classes,n_classes))
+            sn.heatmap(df_cm, annot=True, fmt='d')
+            plt.show()
 
     # Save checkpoint.
     acc = (total_acc)/(batch_idx+1)

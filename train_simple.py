@@ -6,10 +6,14 @@ import torch.backends.cudnn as cudnn
 import torchvision
 import torchvision.transforms as transforms
 from torch.utils.tensorboard import SummaryWriter
+from sklearn.metrics import confusion_matrix
 
 import os
 import argparse
+import seaborn as sn
+import pandas as pd
 from tqdm import tqdm
+import matplotlib.pyplot as plt
 
 from dataset import *
 from model import *
@@ -17,7 +21,7 @@ from model import *
 torch.backends.cudnn.deterministic = True # Making some stuff for  computations deterministic
 torch.backends.cudnn.benchmark = False
 torch.manual_seed(42)
-
+pd.options.display.float_format = '{:20,.2f}'.format
 
 def accuracy_top_k(output, target, topk=(1,)):
     """Computes the precision@k for the specified values of k"""
@@ -74,6 +78,9 @@ def test(epoch):
     test_progress_bar = tqdm(test_loader)
     test_progress_bar.set_description('Test')
 
+    conf_matrix_outputs = []
+    conf_matrix_targets = []
+
     with torch.no_grad():
         for batch_idx, (inputs, targets) in enumerate(test_progress_bar):
             inputs, targets = inputs.to(device), targets.to(device)
@@ -88,7 +95,27 @@ def test(epoch):
     writer.add_scalar('Loss/test', test_loss/(batch_idx+1), epoch)
 
     print('Top-1: {} %, Loss: {}'.format(round(((total_acc)/(batch_idx+1)),2), (test_loss)/(batch_idx+1)))
+    
+    if epoch % 5 == 0:
+        if dataset_index == 0:
+            n_classes = 5
+            dataset_labels = ['Blouse','Dress','Jeans','Skirt','Tank']
+        else:
+            n_classes = 10
+            dataset_labels = ['plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
+        with torch.no_grad():
+            for batch_idx, (inputs, targets) in enumerate(test_progress_bar):
+                inputs, targets = inputs.to(device), targets.to(device)
+                outputs = model(inputs)
+                targets = targets.to('cpu')
+                conf_matrix_outputs.append(outputs[dataset_index].argmax(dim=1).to('cpu').numpy())
+                conf_matrix_targets.append(targets.numpy())
 
+            conf_matrix = confusion_matrix(np.concatenate(conf_matrix_outputs), np.concatenate(conf_matrix_targets))
+            df_cm = pd.DataFrame(conf_matrix, index = dataset_labels, columns = dataset_labels)
+            plt.figure(figsize = (n_classes,n_classes))
+            sn.heatmap(df_cm, annot=True, fmt='d')
+            plt.show()
     # Save checkpoint.
     acc = (total_acc)/(batch_idx+1)
 
