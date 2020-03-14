@@ -5,6 +5,7 @@ For all our test we using EfficentNetB0 with input size 3x32x32
 
 # Cifar-10 (Single model)
 *Best Accuracy(top-1):* 88.7%
+
 **Accuracy(top-1) and Loss function:**
 ![Top-1 Accuracy](https://i.imgur.com/QQHZSy7.png)
 ![Loss](https://i.imgur.com/skHlZlU.png)
@@ -33,9 +34,11 @@ Here we have 5 classes: *Blouse, Dress, Jeans, Skirt, Tank*,
 ![Tank](https://i.imgur.com/6sLSHsL.jpg)
 
 *Best Accuracy(top-1):* 77.4%
+
 **Accuracy(top-1) and Loss function:**
 ![Accuracy(top-1)](https://i.imgur.com/kpTzril.png)
 ![Loss](https://i.imgur.com/r71lPgJ.png)
+
 **Confusion Matrix**
 ![Confusion matrix](https://i.imgur.com/UopLddi.png)
 
