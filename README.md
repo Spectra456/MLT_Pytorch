@@ -14,7 +14,7 @@ For all our test we using EfficentNetB0 with input size 3x32x32
 
 ## FashionRGB (Single model)
 It's a dataset from my previous test task.
-Here we have 5 classes: *Blouse, Dress, Jeans Skirt,Tank*,
+Here we have 5 classes: *Blouse, Dress, Jeans, Skirt, Tank*,
 5k rgb images in train set and 5k images in val set
 
 *Bloose*:
