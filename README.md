@@ -54,6 +54,7 @@ Here we have 5 classes: *Blouse, Dress, Jeans, Skirt, Tank*,
 	    if (bool(random.getrandbits(1)) ==  True):
 		    then train FashionRGB layer
 *It's help us keeping balance between metrics of our datasets*
+
 **Accuracy(top-1) and Loss function:**
 
 ![Accuracy(top-1)](https://i.imgur.com/Psmtl5G.png)
