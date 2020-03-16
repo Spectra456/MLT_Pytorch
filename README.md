@@ -72,8 +72,8 @@ Cifar-10
 |--|--|
 | Cifar-10 |88.7 %|
 |FashionRGB|77.4 %|
-|MLT(Cifar-10)|80.6 %(⬇️8.1% ⬇️)|
-|MLT(FashionRGB)|80.3 %(⬆️2.9 % ⬆️)|
+|MLT(Cifar-10)|80.6 %(-8.1%)|
+|MLT(FashionRGB)|80.3 %(+2.9%)|
 
 ## Run
 1. Download FashionRGB dataset from [Google Drive](https://drive.google.com/open?id=14X2KGG_ov0jG04DM2e8xK0AXeBOtnmSS).
