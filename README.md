@@ -46,7 +46,7 @@ Here we have 5 classes: *Blouse, Dress, Jeans, Skirt, Tank*,
 *Best Accuracy(top-1) FashionRGB:* 80.3%
 *Best Accuracy(top-1) Cifar10:* 80.6%
 
-*I tried several methods of MLT, but there always some disbalance between datasets. Here i used my own solution, where:*
+*I tried several methods of MLT, but there always some disbalance between datasets(because Cifar10 have 10x more images in train set). Here i used my own solution, where:*
 
     for i in range(len(train_loader_cifar):
 	    if (bool(random.getrandbits(1)) ==  True):
